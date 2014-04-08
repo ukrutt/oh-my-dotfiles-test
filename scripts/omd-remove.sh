@@ -4,7 +4,7 @@ fi
 
 # echo "Removing ${DOTFILES}"
 if [[ -d ${DOTFILES} ]]; then
-  DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d%H%M%S`";
+  DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
   echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
   mv ${DOTFILES} ~/${DOTFILES_SAVE}
 else
