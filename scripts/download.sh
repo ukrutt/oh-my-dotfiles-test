@@ -24,3 +24,12 @@ echo "\033[0;34mCloning Oh My Dotfiles...\033[0m"
 echo "\033[032m"'Oh My Dotfiles have now been downloaded'"\033[0m"
 
 echo "\033[0;34mTo remove: $\033[0m sh .oh-my-dotfiles/scripts/omd-remove.sh"
+
+
+echo "Don't worry, I got your back."
+echo " "
+echo "      O     |  O     "
+echo "     / \    |\/|\    "
+echo "    /   \      | \   "
+echo "     / \      / \    "
+echo "    /   \    /   \   "
