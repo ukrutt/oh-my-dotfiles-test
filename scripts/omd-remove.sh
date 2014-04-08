@@ -2,11 +2,11 @@ if [ ! -n "$DOTFILES" ]; then
   DOTFILES=~/.oh-my-dotfiles
 fi
 
-echo "Removing ${DOTFILES}"
+# echo "Removing ${DOTFILES}"
 if [[ -d ${DOTFILES} ]]; then
-  DOTFILES_SAVE="~/.omd-uninstalled-`date +%Y%m%d%H%M%S`";
-  echo "Found ${DOTFILES} - renaming to ${DOTFILES_SAVE}"
-  mv ${DOTFILES} ${DOTFILES_SAVE}
+  DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d%H%M%S`";
+  echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
+  mv ${DOTFILES} ~/${DOTFILES_SAVE}
 else
   echo "No '${DOTFILES}' folder"
 fi
