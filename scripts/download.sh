@@ -12,7 +12,9 @@ if [ ! -n "$DOTFILES" ]; then
 fi
 
 if [ -d "$DOTFILES" ]; then
-  echo "\033[0;33mYou already have Oh My Dotfiles installed.\033[0m You'll need to remove $DOTFILES if you want to install"
+  echo "\033[0;33mYou already have Oh My Dotfiles installed.\033[0m
+You'll need to remove $DOTFILES if you want to install.  Try:
+$ sh .oh-my-dotfiles/scripts/omd-remove.sh"
   exit
 fi
 
