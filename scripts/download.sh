@@ -6,6 +6,8 @@ set -e
 hash zsh >/dev/null 2>&1 || { echo >&2 "Need zsh.  Aborting."; exit 1; }
 hash git >/dev/null 2>&1 || { echo >&2 "Need git.  Aborting."; exit 1; }
 
+GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
+
 # Check that the 'dotfiles' aren't already installed
 if [ ! -n "${DOTFILES}" ]; then
   DOTFILES=~/.oh-my-dotfiles
@@ -19,7 +21,7 @@ You'll need to remove ${DOTFILES} if you want to install.
 fi
 
 echo "\033[0;34mCloning Oh My Dotfiles...\033[0m"
-/usr/bin/env git clone https://github.com/ukrutt/oh-my-dotfiles-test.git ${DOTFILES}
+/usr/bin/env git clone ${GIT_ORIGIN} ${DOTFILES}
 
 echo "\033[032m"'Oh My Dotfiles have now been downloaded'"\033[0m"
 
