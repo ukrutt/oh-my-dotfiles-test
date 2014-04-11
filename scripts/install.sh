@@ -60,8 +60,10 @@ install_dotfiles () {
   backup_all=false
   skip_all=false
 
-  for source in `find $DOTFILES_ROOT -maxdepth 2 -name \*.symlink`
+  for source in `find $DOTFILES_ROOT -maxdepth 1 -name \*.symlink`
   do
+    echo ${source}
+    echo ${source%.*}
     dest="$HOME/.`basename \"${source%.*}\"`"
 
     if [ -f $dest ] || [ -d $dest ]
@@ -124,7 +126,7 @@ echo "DOTFILES_ROOT is '${DOTFILES_ROOT}'"
 echo "dirname is $(dirname $0)"
 
 # setup_gitconfig
-# install_dotfiles
+install_dotfiles
 
 # # If we're on a Mac, let's install and setup homebrew.
 # if [ "$(uname -s)" == "Darwin" ]
