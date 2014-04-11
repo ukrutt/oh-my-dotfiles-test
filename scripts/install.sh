@@ -2,7 +2,8 @@
 #
 # bootstrap installs things.
 
-DOTFILES_ROOT="`pwd`"
+# Robust way of getting the path to the ancestor of the directory of this file.
+DOTFILES_ROOT="$( cd "$( dirname "$0" )/.." && pwd)"
 
 set -e
 
