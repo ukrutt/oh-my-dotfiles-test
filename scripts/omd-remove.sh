@@ -1,14 +1,32 @@
+# Tool to remove/backup dotfiles folder
+
 if [ ! -n "$DOTFILES" ]; then
-  DOTFILES=~/.oh-my-dotfiles
+    DOTFILES="$( cd "$( dirname "$0" )/.." && pwd)"
 fi
+
+user () {
+  printf "\r  [ \033[0;33m?\033[0m ] $1 "
+}
+
+user "Remove symlinks to ${DOTFILES}? [Y/n]"
+read -n 1 action
+if [ ${action} == "Y" ] || [ ${action} == "y" ] || [ ${action} == "" ]; then
+    echo ""
+    echo "OK, removing symlinks"
+    sh omd-remove-symlinks.sh
+else
+    echo ""
+    echo "OK, not removing symlinks"
+fi
+
 
 # echo "Removing ${DOTFILES}"
 if [[ -d ${DOTFILES} ]]; then
-  DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
-  echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
-  mv ${DOTFILES} ~/${DOTFILES_SAVE}
+    DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
+    echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
+    mv ${DOTFILES} ~/${DOTFILES_SAVE}
 else
-  echo "No '${DOTFILES}' folder"
+    echo "No '${DOTFILES}' folder"
 fi
 
 # echo "Looking for original zsh config..."
