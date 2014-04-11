@@ -62,8 +62,7 @@ install_dotfiles () {
 
   for source in `find $DOTFILES_ROOT -maxdepth 1 -name \*.symlink`
   do
-    echo ${source}
-    echo ${source%.*}
+    # NOTE: The '%.*' part below strips the extension
     dest="$HOME/.`basename \"${source%.*}\"`"
 
     if [ -f $dest ] || [ -d $dest ]
