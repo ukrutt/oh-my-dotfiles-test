@@ -120,20 +120,23 @@ install_dotfiles () {
   done
 }
 
-setup_gitconfig
-install_dotfiles
+echo "DOTFILES_ROOT is '${DOTFILES_ROOT}'"
+echo "dirname is $(dirname $0)"
 
-# If we're on a Mac, let's install and setup homebrew.
-if [ "$(uname -s)" == "Darwin" ]
-then
-  info "installing dependencies"
-  if source bin/dot > /tmp/dotfiles-dot 2>&1
-  then
-    success "dependencies installed"
-  else
-    fail "error installing dependencies"
-  fi
-fi
+# setup_gitconfig
+# install_dotfiles
+
+# # If we're on a Mac, let's install and setup homebrew.
+# if [ "$(uname -s)" == "Darwin" ]
+# then
+#   info "installing dependencies"
+#   if source bin/dot > /tmp/dotfiles-dot 2>&1
+#   then
+#     success "dependencies installed"
+#   else
+#     fail "error installing dependencies"
+#   fi
+# fi
 
 echo ''
 echo '  All installed!'
