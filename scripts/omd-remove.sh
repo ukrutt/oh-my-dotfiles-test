@@ -10,7 +10,7 @@ user () {
 
 user "Remove symlinks to ${DOTFILES}? [Y/n]"
 read -n 1 action
-if [ ${action} == "Y" ] || [ ${action} == "y" ] || [ ${action} == "" ]; then
+if [[ ! -n ${action} || ${action} == "Y" || ${action} == "y" ]]; then
     echo ""
     echo "OK, removing symlinks"
     sh ${DOTFILES}/scripts/omd-remove-symlinks.sh
@@ -22,9 +22,15 @@ fi
 
 # echo "Removing ${DOTFILES}"
 if [[ -d ${DOTFILES} ]]; then
-    DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
-    echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
-    mv ${DOTFILES} ~/${DOTFILES_SAVE}
+    user "Found ${DOTFILES} - remove? [y/N]"
+    read -n 1 action
+    if [[ -n ${action} && ${action} == "Y" || ${action} == "y" ]]; then
+        DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
+        echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
+        mv ${DOTFILES} ~/${DOTFILES_SAVE}
+    else
+        echo "OK, not removing"
+    fi
 else
     echo "No '${DOTFILES}' folder"
 fi
