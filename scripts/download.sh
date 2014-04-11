@@ -6,7 +6,11 @@ set -e
 hash zsh >/dev/null 2>&1 || { echo >&2 "Need zsh.  Aborting."; exit 1; }
 hash git >/dev/null 2>&1 || { echo >&2 "Need git.  Aborting."; exit 1; }
 
-GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
+if [ -n $1 ]; then
+    GIT_ORIGIN=${HOME}/work/projects/oh-my-dotfiles-test
+else
+    GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
+fi
 
 # Check that the 'dotfiles' aren't already installed
 if [ ! -n "${DOTFILES}" ]; then
