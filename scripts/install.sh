@@ -65,7 +65,7 @@ install_dotfiles () {
     # NOTE: The '%.*' part below strips the extension
     dest="$HOME/.`basename \"${source%.*}\"`"
 
-    if [ -f $dest ] || [ -d $dest ]
+    if [ -f $dest ] || [ -d $dest ] || [ -L ${dest} ]
     then
 
       overwrite=false
