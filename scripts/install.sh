@@ -5,6 +5,8 @@
 # Robust way of getting the path to the ancestor of the directory of this file.
 DOTFILES_ROOT="$( cd "$( dirname "$0" )/.." && pwd)"
 
+BACKUP=".backup-$(date +%Y%m%d-%H%M%S)"
+
 set -e
 
 echo ''
@@ -104,8 +106,8 @@ install_dotfiles () {
 
       if [ "$backup" == "true" ] || [ "$backup_all" == "true" ]
       then
-        mv $dest $dest\.backup
-        success "moved $dest to $dest.backup"
+        mv ${dest} ${dest}${BACKUP}
+        success "moved ${dest} to ${dest}${BACKUP}"
       fi
 
       if [ "$skip" == "false" ] && [ "$skip_all" == "false" ]
