@@ -13,7 +13,7 @@ read -n 1 action
 if [ ${action} == "Y" ] || [ ${action} == "y" ] || [ ${action} == "" ]; then
     echo ""
     echo "OK, removing symlinks"
-    sh omd-remove-symlinks.sh
+    sh ${DOTFILES}/scripts/omd-remove-symlinks.sh
 else
     echo ""
     echo "OK, not removing symlinks"
