@@ -6,6 +6,15 @@ user () {
   printf "\r  [ \033[0;33m?\033[0m ] $1 "
 }
 
+echo "Want better dotfiles?"
+echo "Don't worry, I got your back."
+echo " "
+echo "      O     |  O     "
+echo "     / \    |\/|\    "
+echo "    /   \      | \   "
+echo "     / \      / \    "
+echo "    /   \    /   \   "
+
 
 # Check that we have some essential programs already installed.
 hash zsh >/dev/null 2>&1 || { echo >&2 "Need zsh.  Aborting."; exit 1; }
@@ -54,11 +63,3 @@ echo "\033[0;34mTo remove:  $\033[0m sh ${DOTFILES}/scripts/omd-remove.sh"
 # fi
 
 echo "\033[032mTo install: $\033[0m sh ${DOTFILES}/scripts/install.sh"
-
-echo "Don't worry, I got your back."
-echo " "
-echo "      O     |  O     "
-echo "     / \    |\/|\    "
-echo "    /   \      | \   "
-echo "     / \      / \    "
-echo "    /   \    /   \   "
