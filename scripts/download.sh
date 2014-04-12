@@ -31,23 +31,27 @@ fi
 
 echo "\033[0;34mCloning Oh My Dotfiles...\033[0m"
 /usr/bin/env git clone ${GIT_ORIGIN} ${DOTFILES}
+echo "\033[0;34mDownloading Oh My Zsh...\033[0m"
+cd ${DOTFILES}
+/usr/bin/env git submodule init
+/usr/bin/env git submodule update
 
 echo "\033[032m"'Oh My Dotfiles have now been downloaded'"\033[0m"
 
 echo "\033[0;34mTo remove: $\033[0m sh ${DOTFILES}/scripts/omd-remove.sh"
 
-user "Download Oh-My_Zsh? [Y/n]"
-read -n 1 action
-if [[ ! -n ${action} || ${action} == "Y" || ${action} == "y" ]]; then
-    echo ""
-    echo "OK, downloading Oh My Zsh."
-    cd ${DOTFILES}
-    /usr/bin/env git submodule init
-    /usr/bin/env git submodule update
-else
-    echo ""
-    echo "OK, not downloading Oh My Zsh."
-fi
+# user "Download Oh-My_Zsh? [Y/n]"
+# read -n 1 action
+# if [[ ! -n ${action} || ${action} == "Y" || ${action} == "y" ]]; then
+#     echo ""
+#     echo "OK, downloading Oh My Zsh."
+#     cd ${DOTFILES}
+#     /usr/bin/env git submodule init
+#     /usr/bin/env git submodule update
+# else
+#     echo ""
+#     echo "OK, not downloading Oh My Zsh."
+# fi
 
 
 echo "Don't worry, I got your back."
