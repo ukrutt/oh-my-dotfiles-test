@@ -20,13 +20,14 @@ echo "    /   \    /   \   "
 hash zsh >/dev/null 2>&1 || { echo >&2 "Need zsh.  Aborting."; exit 1; }
 hash git >/dev/null 2>&1 || { echo >&2 "Need git.  Aborting."; exit 1; }
 
-echo "Arg is \'$1\'"
-if [ -n $1 ]; then
-    echo "Arg is \'$1\'"
-    GIT_ORIGIN=${HOME}/work/projects/oh-my-dotfiles-test
-else
-    GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
-fi
+# echo "Arg is \'$1\'"
+# if [ -n $1 ]; then
+#     echo "Arg is \'$1\'"
+#     GIT_ORIGIN=${HOME}/work/projects/oh-my-dotfiles-test
+# else
+#     GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
+# fi
+GIT_ORIGIN=https://github.com/ukrutt/oh-my-dotfiles-test.git
 
 # Check that the 'dotfiles' aren't already installed
 if [ ! -n "${DOTFILES}" ]; then
