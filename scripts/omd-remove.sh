@@ -26,9 +26,11 @@ if [[ -d ${DOTFILES} ]]; then
     read -n 1 action
     if [[ -n ${action} && ${action} == "Y" || ${action} == "y" ]]; then
         DOTFILES_SAVE=".omd-uninstalled-`date +%Y%m%d-%H%M%S`";
+        echo ""
         echo "Found ${DOTFILES} - renaming to ~/${DOTFILES_SAVE}"
         mv ${DOTFILES} ~/${DOTFILES_SAVE}
     else
+        echo ""
         echo "OK, not removing"
     fi
 else
