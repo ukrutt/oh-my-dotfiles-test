@@ -38,7 +38,7 @@ cd ${DOTFILES}
 
 echo "\033[032m"'Oh My Dotfiles have now been downloaded'"\033[0m"
 
-echo "\033[0;34mTo remove: $\033[0m sh ${DOTFILES}/scripts/omd-remove.sh"
+echo "\033[0;34mTo remove:  $\033[0m sh ${DOTFILES}/scripts/omd-remove.sh"
 
 # user "Download Oh-My_Zsh? [Y/n]"
 # read -n 1 action
@@ -53,6 +53,7 @@ echo "\033[0;34mTo remove: $\033[0m sh ${DOTFILES}/scripts/omd-remove.sh"
 #     echo "OK, not downloading Oh My Zsh."
 # fi
 
+echo "\033[032mTo install: $\033[0m sh ${DOTFILES}/scripts/install.sh"
 
 echo "Don't worry, I got your back."
 echo " "
