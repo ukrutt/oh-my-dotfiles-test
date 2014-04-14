@@ -24,7 +24,7 @@ else
     echo "2 Length of '$1' is nonzero (${#1})"
 fi
 
-empty='e'
+empty=''
 
 if [ -n ${empty} ]; then
     echo "3 Length of '$empty' is nonzero (${#empty})"
