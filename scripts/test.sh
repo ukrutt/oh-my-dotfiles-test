@@ -1,3 +1,12 @@
+# Try to run this as
+#
+#  $ sh test.sh
+#
+# and
+#
+#  $ sh test.sh foo
+
+
 
 echo $0
 
