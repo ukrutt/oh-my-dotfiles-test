@@ -12,13 +12,13 @@ echo $0
 
 echo "Number of arguments is $#"
 
-if [ -n $1 ]; then
+if [ -n "$1" ]; then
     echo "1 Length of '$1' is nonzero (${#1})"
 else
     echo "1 Length of '$1' is zero (${#1})"
 fi
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     echo "2 Length of '$1' is zero (${#1})"
 else
     echo "2 Length of '$1' is nonzero (${#1})"
@@ -26,10 +26,10 @@ fi
 
 empty=''
 
-if [ -n ${empty} ]; then
+if [ -n "${empty}" ]; then
     echo "3 Length of '$empty' is nonzero (${#empty})"
 fi
 
-if [ -z ${empty} ]; then
+if [ -z "${empty}" ]; then
     echo "4 Length of '$empty' is zero (${#empty})"
 fi
