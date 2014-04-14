@@ -33,3 +33,5 @@ fi
 if [ -z "${empty}" ]; then
     echo "4 Length of '$empty' is zero (${#empty})"
 fi
+
+echo "Program is $0"
