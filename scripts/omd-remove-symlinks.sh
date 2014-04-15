@@ -35,32 +35,35 @@ skip_all=false
 
 for symlink in $(find ${HOME} -maxdepth 1 -type l); do
     target=$(readlink ${symlink})
-    if [[ ${target} == *${DOTFILES_ROOT}* ]]; then
+    case ${target} in
+      *${DOTFILES_ROOT}*)
         delete=false
         skip=false
-        if [ ${delete_all} == "false" ] && [ ${skip_all} == "false" ]; then
+        if [ ${delete_all} = "false" ] && [ ${skip_all} = "false" ]; then
             user "Found symlink ${symlink} -> ${target}. [s]kip, [S]kip all, [d]elete, [D]elete all?"
-            read -n 1 action
+            read action
             case "$action" in
-                d )
+                d*)
                     delete=true;;
-                D )
+                D*)
                     delete_all=true;;
-                s )
+                s*)
                     skip=true;;
-                S )
+                S*)
                     skip_all=true;;
                 * )
                     ;;
             esac
         fi
-        if [ ${delete} == "true" ] || [ ${delete_all} == "true" ]; then
+        if [ ${delete} = "true" ] || [ ${delete_all} = "true" ]; then
            delete_link ${symlink}
         fi
-        if [ ${skip} == "true" ] || [ ${skip_all} == "true" ]; then
+        if [ ${skip} = "true" ] || [ ${skip_all} = "true" ]; then
             skip_link ${symlink} ${target}
         fi
-    else
+        ;;
+      *)
         skip_link "${symlink}" "${target}"
-    fi
+        ;;
+    esac
 done
