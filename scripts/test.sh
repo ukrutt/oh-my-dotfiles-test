@@ -14,11 +14,11 @@ echo "Number of arguments is $#"
 
 OOB="oob"
 
-if [ $1 = "*${OOB}*" ]; then
-    echo "There is a match - found '${OOB}' in '$1'"
-else
-    echo "No match"
-fi
+# if [ $1 = "*${OOB}*" ]; then
+#     echo "There is a match - found '${OOB}' in '$1'"
+# else
+#     echo "No match"
+# fi
 
 case $1 in
   *${OOB}*) echo "Found it in the variable OOB" ;;
@@ -26,6 +26,22 @@ case $1 in
   *) echo "Not a substring" ;;
 esac
 
+user () {
+  printf "\r  [ \033[0;33m?\033[0m ] $1 "
+}
+
+user "Remove symlinks to ${DOTFILES}? [Y/n]"
+read action
+case ${action} in
+    ""|[Yy]* )
+        echo ""
+        echo "OK, removing symlinks"
+        ;;
+    * )
+        echo ""
+        echo "OK, not removing symlinks"
+        ;;
+esac
 
 
 # if [ -n "$1" ]; then
