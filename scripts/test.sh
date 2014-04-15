@@ -31,7 +31,10 @@ user () {
 }
 
 user "Remove symlinks to ${DOTFILES}? [Y/n]"
-read action
+# read -n 1 action
+stty raw
+action=$(dd bs=1 count=1 2> /dev/null)
+stty -raw
 case ${action} in
     ""|[Yy]* )
         echo ""
