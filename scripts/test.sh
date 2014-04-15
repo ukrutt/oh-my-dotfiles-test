@@ -12,26 +12,42 @@ echo $0
 
 echo "Number of arguments is $#"
 
-if [ -n "$1" ]; then
-    echo "1 Length of '$1' is nonzero (${#1})"
+OOB="oob"
+
+if [ $1 = "*${OOB}*" ]; then
+    echo "There is a match - found '${OOB}' in '$1'"
 else
-    echo "1 Length of '$1' is zero (${#1})"
+    echo "No match"
 fi
 
-if [ -z "$1" ]; then
-    echo "2 Length of '$1' is zero (${#1})"
-else
-    echo "2 Length of '$1' is nonzero (${#1})"
-fi
+case $1 in
+  *${OOB}*) echo "Found it in the variable OOB" ;;
+  *oob*) echo "Found it with hardcoded 'oob'" ;;
+  *) echo "Not a substring" ;;
+esac
 
-empty=''
 
-if [ -n "${empty}" ]; then
-    echo "3 Length of '$empty' is nonzero (${#empty})"
-fi
 
-if [ -z "${empty}" ]; then
-    echo "4 Length of '$empty' is zero (${#empty})"
-fi
+# if [ -n "$1" ]; then
+#     echo "1 Length of '$1' is nonzero (${#1})"
+# else
+#     echo "1 Length of '$1' is zero (${#1})"
+# fi
 
-echo "Program is $0"
+# if [ -z "$1" ]; then
+#     echo "2 Length of '$1' is zero (${#1})"
+# else
+#     echo "2 Length of '$1' is nonzero (${#1})"
+# fi
+
+# empty=''
+
+# if [ -n "${empty}" ]; then
+#     echo "3 Length of '$empty' is nonzero (${#empty})"
+# fi
+
+# if [ -z "${empty}" ]; then
+#     echo "4 Length of '$empty' is zero (${#empty})"
+# fi
+
+# echo "Program is $0"
