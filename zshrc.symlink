@@ -76,3 +76,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# Private data is (possibly) in the file below
+[[ -r ${HOME}/.private_profile ]] && source ${HOME}/.private_profile
