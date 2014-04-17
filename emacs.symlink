@@ -118,18 +118,18 @@
  'c-mode
  '(("\\<\\(CCC.*?:\\)" 1 font-lock-warning-face t)))
 
-(setq private-dangerous-functions
-      '("mem_Alloc" "mem_Free"
-        "serial_AllocMessage" "serial_FreeMessage"
-        "m_AllocMessage" "m_FreeMessage"
-        "rand" "srand"
-        "OS_ENTER_CRITICAL"
-        "OS_EXIT_CRITICAL"
-        "sys_CRITICAL_SECTION_BEGIN"
-        "sys_CRITICAL_SECTION_END"))
+;; (setq private-dangerous-functions
+;;       '("mem_Alloc" "mem_Free"
+;;         "serial_AllocMessage" "serial_FreeMessage"
+;;         "m_AllocMessage" "m_FreeMessage"
+;;         "rand" "srand"
+;;         "OS_ENTER_CRITICAL"
+;;         "OS_EXIT_CRITICAL"
+;;         "sys_CRITICAL_SECTION_BEGIN"
+;;         "sys_CRITICAL_SECTION_END"))
 
-(with-demoted-errors
-  (load-library "cc-critical-warnings"))
+;; (with-demoted-errors
+;;   (load-library "cc-critical-warnings"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C# / C-sharp
@@ -203,19 +203,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; "Small" Utilities
 
-;;;;;;;;;;;;;;;;
-;; PCL-SVN
-(with-demoted-errors
-  (require 'psvn)
-  (global-set-key [(control c) ?s] 'svn-status))
+;; ;;;;;;;;;;;;;;;;
+;; ;; PCL-SVN
+;; (with-demoted-errors
+;;   (require 'psvn)
+;;   (global-set-key [(control c) ?s] 'svn-status))
 
-;;;;;;;;;;;;;;;;
-;;
-(with-demoted-errors
-  (require 'mercurial))
+;; ;;;;;;;;;;;;;;;;
+;; ;;
+;; (with-demoted-errors
+;;   (require 'mercurial))
 
 ;;;;;;;;;;;;;;;;
 ;; Pager
+;; HHH: Consider removing?
 (with-demoted-errors
   (require 'pager)
   (global-set-key "\C-v"     'pager-page-down)
@@ -281,14 +282,15 @@
 ;; Begraver veldig ofte bufferet jeg er i...
 (global-set-key [(control x) (control z)] 'bury-buffer)
 
-;; Jeg er vant til aa bruke F9 for aa oppdatere bufferet fra det paa
-;; disk.
-;; (Se info [(emacs)Customization -> Key Bindings -> Init Rebinding]
-;; for mer tips om tastebinding.)
-(global-set-key [f9] 'revert-buffer)
+;; ;; Jeg er vant til aa bruke F9 for aa oppdatere bufferet fra det paa
+;; ;; disk.
+;; ;; (Se info [(emacs)Customization -> Key Bindings -> Init Rebinding]
+;; ;; for mer tips om tastebinding.)
+;; (global-set-key [f9] 'revert-buffer)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hl-line-mode er interessant for aa highlighte linja jeg er paa
-
+;; HHH: Check if defaults work just as well or better...
 ;; (global-hl-line-mode t)
 (make-face 'hl-face)
 (set-face-attribute 'hl-face nil :inherit 'highlight)
@@ -296,12 +298,12 @@
 (setq hl-line-face 'hl-face)
 
 ;; scroll-, menu- og tool-bar...
-(if window-system (set-scroll-bar-mode 'right))
+(if window-system (set-scroll-bar-mode 'right)) ; HHH: necessary?
 (unless (string= window-system "mac")
   (menu-bar-mode -1)
   (global-set-key [(control c) ?b] 'menu-bar-mode))
 
-(if window-system (tool-bar-mode -1))
+(if window-system (tool-bar-mode -1)) ; HHH: Why restrict to window system?
 ;; Scroll settings
 (setq scroll-margin 2)                  ; Keep 2 lines visible
 (setq scroll-step 3)                    ; Jump by 4 lines at a time
@@ -309,6 +311,7 @@
 ;; On the Mac I am using a "Mighty Mouse"... and its scroller is
 ;; far more sensitive than any other scroller.
 (if macp
+    ;; HHH: necesssary?
     (setq mouse-wheel-scroll-amount
           '(1
             ((shift) . 5)
@@ -361,9 +364,9 @@ With ARG, show trailing whitespace iff ARG is positive."
                                         ;turned off temporarily, due to introduction of (delete-selection-mode t)
                                         ;(setq mark-even-if-inactive t)
 ;; Typing text replaces the region...
-(delete-selection-mode t)
+(delete-selection-mode t)               ; HHH: Seems not to work...
 
-(setq backup-by-copying t)
+(setq backup-by-copying t)              ; HHH: Necessary?
 
 (which-function-mode t) ; Displays name of the function in the modeline
 (add-to-list 'which-func-modes 'python-mode)
@@ -403,7 +406,7 @@ With ARG, show trailing whitespace iff ARG is positive."
   (define-key ctl-x-map "\C-r" 'recentf-select-file))
 
 ;; mouse-wheel-mode seems not to work in the Mac :(
-(unless macp
+(unless macp                     ; HHH: This seems to happen anyway...
   (mouse-wheel-mode t)
   (setq mouse-wheel-follow-mouse t))
 
@@ -411,26 +414,27 @@ With ARG, show trailing whitespace iff ARG is positive."
 (show-paren-mode t)
 (setq show-paren-style 'mixed)
 
-(setq dired-recursive-deletes 'top)
+;; (setq dired-recursive-deletes 'top)
 (define-key dired-mode-map "\C-c\C-c" 'compile)
 
 ;; Adding '.svn' to list of ignored folders for rgrep
+;; HHH: Consider adding .git...
 (setq grep-find-ignored-directories '("CVS" ".hg" "{arch}" ".svn"))
 
-;;;;;;;;;;;;;;;;
-;; aspell instead of ispell doesn't work in emacs 21
-;; (setq-default ispell-program-name "aspell")
-;; (ispell-change-dictionary "american")
-(setq ispell-dictionary "american")
-;; (setq ispell-program-name "/usr/local/bin/ispell")
+;; ;;;;;;;;;;;;;;;;
+;; ;; aspell instead of ispell doesn't work in emacs 21
+;; ;; (setq-default ispell-program-name "aspell")
+;; ;; (ispell-change-dictionary "american")
+;; (setq ispell-dictionary "american")
+;; ;; (setq ispell-program-name "/usr/local/bin/ispell")
 
-(with-demoted-errors
-  (require 'setnu)			; use: M-x setnu-mode
-  (setq setnu-line-number-format "%4d "))
-;; (require 'line-num) ; setnu.el seems to work better.
+;; ;; (with-demoted-errors
+;; ;;   (require 'setnu)			; use: M-x setnu-mode
+;; ;;   (setq setnu-line-number-format "%4d "))
+;; ;; (require 'line-num) ; setnu.el seems to work better.
 
-;; Line wrapping at word boundaries (not the same as folding!)
-(require 'longlines)
+;; ;; Line wrapping at word boundaries (not the same as folding!)
+;; ;; (require 'longlines)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Auto-modus!
@@ -444,12 +448,14 @@ With ARG, show trailing whitespace iff ARG is positive."
 
 
 ;; (global-set-key [(control c) ?\;] 'comment-region)
-(setq comment-style 'indent)
+(setq comment-style 'indent)            ; Consider using the default
 
-;; FTP
-(setq ange-ftp-default-user "anonymous")
-(auto-compression-mode t)
+;; ;; FTP
+;; (setq ange-ftp-default-user "anonymous")
+;; (auto-compression-mode t)
 
+;; HHH 1) Need to check these frame sizes
+;; HHH 2) They should be available only when I have a window
 (defun hh-enlarge-frame ()
   (interactive)
   (modify-frame-parameters nil '((left . 1) (top . 4)
