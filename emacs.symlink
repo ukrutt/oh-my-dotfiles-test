@@ -9,8 +9,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq elisp-directory (expand-file-name "~/Library/Elisp/"))
-;; (if (file-directory-p elisp-directory)
-;;     (pushnew elisp-directory load-path :test #'equal))
+(if (file-directory-p elisp-directory)
+    (pushnew elisp-directory load-path :test #'equal))
 
 (setq cygwinp (numberp (string-match "cygwin" (version))))
 (setq macp (numberp (string-match "apple" (version))))
