@@ -609,11 +609,11 @@ With ARG, show trailing whitespace iff ARG is positive."
 
 (server-start)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Custom b{\o}r komme p{\aa} slutten, dersom en skal v{\ae}re sikker p{\aa}
-;; at den f{\aa}r virkning...
-(setq custom-file "~/.dotfiles/.emacs-custom")
-(load custom-file)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; Custom b{\o}r komme p{\aa} slutten, dersom en skal v{\ae}re sikker p{\aa}
+;; ;; at den f{\aa}r virkning...
+;; (setq custom-file "~/.dotfiles/.emacs-custom")
+;; (load custom-file)
 
 (put 'narrow-to-region 'disabled nil)
 
