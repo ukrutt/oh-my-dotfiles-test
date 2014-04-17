@@ -5,12 +5,12 @@
 (message "*** Start of .emacs ***")
 
 (require 'cl)
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq elisp-directory (expand-file-name "~/Library/Elisp/"))
-(if (file-directory-p elisp-directory)
-    (pushnew elisp-directory load-path :test #'equal))
+;; (if (file-directory-p elisp-directory)
+;;     (pushnew elisp-directory load-path :test #'equal))
 
 (setq cygwinp (numberp (string-match "cygwin" (version))))
 (setq macp (numberp (string-match "apple" (version))))
@@ -205,26 +205,29 @@
 
 ;;;;;;;;;;;;;;;;
 ;; PCL-SVN
-(require 'psvn)
-(global-set-key [(control c) ?s] 'svn-status)
+(with-demoted-errors
+  (require 'psvn)
+  (global-set-key [(control c) ?s] 'svn-status))
 
 ;;;;;;;;;;;;;;;;
 ;;
-(require 'mercurial)
+(with-demoted-errors
+  (require 'mercurial))
 
 ;;;;;;;;;;;;;;;;
 ;; Pager
-(require 'pager)
-(global-set-key "\C-v"     'pager-page-down)
-(global-set-key [next]     'pager-page-down)
-(global-set-key "\ev"      'pager-page-up)
-(global-set-key [prior]    'pager-page-up)
-(global-set-key "\M-p"     'pager-row-up)
-(global-set-key '[M-up]    'pager-row-up)
-(global-set-key '[M-kp-8]  'pager-row-up)
-(global-set-key "\M-n"     'pager-row-down)
-(global-set-key '[M-down]  'pager-row-down)
-(global-set-key '[M-kp-2]  'pager-row-down)
+(with-demoted-errors
+  (require 'pager)
+  (global-set-key "\C-v"     'pager-page-down)
+  (global-set-key [next]     'pager-page-down)
+  (global-set-key "\ev"      'pager-page-up)
+  (global-set-key [prior]    'pager-page-up)
+  (global-set-key "\M-p"     'pager-row-up)
+  (global-set-key '[M-up]    'pager-row-up)
+  (global-set-key '[M-kp-8]  'pager-row-up)
+  (global-set-key "\M-n"     'pager-row-down)
+  (global-set-key '[M-down]  'pager-row-down)
+  (global-set-key '[M-kp-2]  'pager-row-down))
 
 ;;;;;;;;;;;;;;;;
 ;; Wdired
@@ -242,8 +245,9 @@
 ;; font-lock
 (require 'font-lock)
 (global-font-lock-mode t)
-(load-library "hh-font-lock-colors")
-(hh-set-faces hh-colors)
+(with-demoted-errors
+  (load-library "hh-font-lock-colors")
+  (hh-set-faces hh-colors))
 
 (setq-default case-fold-search t)
 
@@ -392,8 +396,11 @@ With ARG, show trailing whitespace iff ARG is positive."
 (setq recentf-auto-cleanup 'never) ;Needs to be before recentf-mode is entered.
 (recentf-mode 1)
 (setq recentf-max-saved-items 200)
-(load "recentf-minibuffer")
-(define-key ctl-x-map "\C-r" 'recentf-select-file)
+(with-demoted-errors
+  ;; HHH: I rely on this function daily... consider submitting for
+  ;;      inclusion in Emacs?
+  (load "recentf-minibuffer")
+  (define-key ctl-x-map "\C-r" 'recentf-select-file))
 
 ;; mouse-wheel-mode seems not to work in the Mac :(
 (unless macp
@@ -417,8 +424,9 @@ With ARG, show trailing whitespace iff ARG is positive."
 (setq ispell-dictionary "american")
 ;; (setq ispell-program-name "/usr/local/bin/ispell")
 
-(require 'setnu)                        ; use: M-x setnu-mode
-(setq setnu-line-number-format "%4d ")
+(with-demoted-errors
+  (require 'setnu)			; use: M-x setnu-mode
+  (setq setnu-line-number-format "%4d "))
 ;; (require 'line-num) ; setnu.el seems to work better.
 
 ;; Line wrapping at word boundaries (not the same as folding!)
@@ -577,8 +585,8 @@ With ARG, show trailing whitespace iff ARG is positive."
           (insert rst-variable-line)))))
   (add-hook 'rst-adjust-hook 'rst-toc-update))
 
-;; outline-magic
-(require 'outline-magic)
+;; ;; outline-magic
+;; (require 'outline-magic)
 
 ;; this will make sure spaces are used instead of tabs
 (setq-default indent-tabs-mode nil)
@@ -613,7 +621,8 @@ With ARG, show trailing whitespace iff ARG is positive."
        (define-key markdown-mode-map (kbd "<S-tab>") 'markdown-shifttab)
        (define-key markdown-mode-map (kbd "C-c C-c o") 'markdown-make-preview)))
 
-(load-library "graphviz-dot-mode")
+(with-demoted-errors
+  (load-library "graphviz-dot-mode"))
 
 (server-start)
 
