@@ -1404,7 +1404,7 @@ With ARG, show trailing whitespace iff ARG is positive."
 ;; (require 'w3m-load)
 
 
-;; (server-start)
+(server-start)
 
 (load "~/.dotfiles/.emacs-macros")
 
