@@ -54,7 +54,6 @@
        (define-key mac-key-mode-map [(alt ctrl t)] 'mac-font-panel-mode)
        (define-key mac-key-mode-map [(alt t)] 'mac-key-open-terminal)))
 
-
 (if window-system
     (load-library "hh-fontset"))
 
@@ -65,206 +64,14 @@
   (add-to-list 'default-frame-alist
                '(font . "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Comint
-;; Disse brukes hovedsakelig i Matlab-modus, men de har effekt for
-;; alle slags comint-buffere -- s{\aa} jeg setter dem her.
-(require 'comint)
-(define-key comint-mode-map [up]
-  'comint-previous-matching-input-from-input)
-(define-key comint-mode-map [down]
-  'comint-next-matching-input-from-input)
-(setq comint-scroll-show-maximum-output t)
-(setq-default comint-input-ring-size 1024)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;; Start some shells
-(setq hh-inode 6)
-;; (setq hh-host-buffer-list
-;;       '((nil "~/work/wireless/Utils" "*shell(linux:Utils/)*")
-;;      (nil "~/work/wireless/Projects/INode_Base_Linux" "*shell(linux:INode/)*")
-;;      (nil "~/work/wireless/Projects/WimTester" "*shell(linux:WimTester/)*")
-;;      (hh-inode "/home/wim" "*shell(WimTester)*")
-;;      (hh-inode "/home/INode" "*shell(INode)*")))
-(setq hh-host-buffer-list
-      '(
-        ;; ("telnet 192.168.254.87" "/sys/INode" "*shell(INode17)*")
-        ;; ("telnet 192.168.254.87" "/sys/WimTester" "*shell(wim17)*")
-        ("telnet 10.0.5.244" "/" "*shell(INode)*")
-        ("telnet 10.0.5.244" "/" "*shell(wsgapp)*")))
-
-(defun hh-start-some-buffers ()
-  ;; (interactive)
-  (dolist (element hh-host-buffer-list)
-    (shell (caddr element))))
-
-;; ansi-term is an interactive compiled Lisp function in `term'.
-;; (ansi-term PROGRAM &optional NEW-BUFFER-NAME)
-
-;; Start a terminal-emulator in a new buffer.
-
-(defun hh-ssh-inodes ()
-  ;; (interactive)
-  (dolist (element hh-host-buffer-list)
-    (let ((inode (car element))
-          (buffer (caddr element)))
-      (shell buffer)
-      ;; (ansi-term "/usr/bin/zsh" buffer)      ; Does not work well
-      ;; (debug)
-      (when inode
-        (insert inode)
-        ;; (insert "ssh root@i-node" (number-to-string
-        ;;                         (cond
-        ;;                          ((numberp inode) inode)
-        ;;                          ((symbolp inode) (eval inode))
-        ;;                          (t 99))))  ;; Default i-node6
-        (comint-send-input)))))
-
-(defun hh-cd-to-folders ()
-  (interactive)
-  (dolist (element hh-host-buffer-list)
-    (let ((buffer (caddr element))
-          (folder (cadr element)))
-      (shell buffer)
-      (insert "cd " folder)
-      (comint-send-input))))
-
-(defun hh-enter-folders-on-inodes ()
-  (interactive)
-  ;;   (delete-other-windows)
-  ;;   (split-window-horizontally)
-  (hh-start-some-buffers)
-  (y-or-n-p "Press Y to continue ")
-  (hh-ssh-inodes))
-
-(defun hh-inode ()
-  (interactive)
-  (let ((buf-gateway "*shell(Gateway)*")
-        (buf-inode "*shell(INode)*")
-        (buf-wim "*shell(WimTester)*"))
-    (shell buf-wim)
-    (shell buf-gateway)
-    (shell buf-inode)
-    (y-or-n-p "Press Y to continue ")
-    (shell buf-wim)
-    (insert "cd ~/work/Raptor/wsg/src/WimTesterPC")
-    (comint-send-input)
-    (insert "./wimtester.exe")
-    (comint-send-input)
-    ;; Entered WimTester
-    ;;;;;;;; Gateway
-    (shell buf-gateway)
-    (insert "telnet 10.0.5.244")
-    (comint-send-input)
-    ;; (insert "")
-    ;; (comint-send-input)
-    (insert "root")
-    (y-or-n-p "Press Y to continue ")
-    (comint-send-input)
-    (insert "")
-    (y-or-n-p "Press Y to continue ")
-    (comint-send-input)
-    (insert "inode-3e -debug")
-    ;;;;;;;; INode
-    (shell buf-inode)
-    (insert "telnet 10.0.5.160")
-    (comint-send-input)
-    ;; (insert "")
-    ;; (comint-send-input)
-    (insert "root")
-    (y-or-n-p "Press Y to continue ")
-    (comint-send-input)
-    (insert "")
-    (y-or-n-p "Press Y to continue ")
-    (comint-send-input)
-    (insert "inode-3e -debug")))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Path
-(defun prepend-to-path (newpath)
-  (add-to-list 'exec-path newpath)
-  (setenv "PATH"
-          (concat newpath
-                  ":"
-                  (getenv "PATH"))))
-
-(if (string= window-system "mac")
-    (progn
-      (prepend-to-path "/usr/local/bin")
-      (prepend-to-path "/usr/texbin")))
-
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ;; Scheme
+;; Scheme
 (setq scheme-program-name
       "/usr/local/bin/scheme")
 (require 'xscheme)
 (defun my-scheme-mode-hook ()
   (define-key scheme-mode-map "\C-m" 'reindent-then-newline-and-indent))
 (add-hook 'scheme-mode-hook 'my-scheme-mode-hook)
-
-(if (require 'mmm-mode nil t)
-    (progn
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;; HTML/PHP
-      ;; (autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
-      ;; ;;   To invoke html-helper-mode automatically on .html files, do this:
-      ;; (setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
-      ;; ;;   To invoke html-helper-mode automatically on .php files, do this:
-      ;; (setq auto-mode-alist (cons '("\\.php$" . html-helper-mode) auto-mode-alist))
-      ;; or
-      ;; (load-library "php-mode-102")
-
-      ;; php-mode
-      (require 'php-mode)
-      ;; css-mode
-      (autoload 'css-mode "css-mode")
-      (setq auto-mode-alist
-            (cons '("\\.css\\'" . css-mode) auto-mode-alist))
-      (setq cssm-indent-function #'cssm-c-style-indenter)
-      (setq cssm-indent-level '2)
-      ;;
-      (add-hook 'php-mode-user-hook 'turn-on-font-lock)
-      ;;
-      (setq mmm-global-mode 'maybe)
-      ;;
-      ;; set up an mmm group for fancy html editing
-      (mmm-add-group
-       'fancy-html
-       '(
-         (html-php-tagged
-          :submode php-mode
-          :face mmm-code-submode-face
-          :front "<[?]php"
-          :back "[?]>")
-         (html-css-attribute
-          :submode css-mode
-          :face mmm-declaration-submode-face
-          :front "style=\""
-          :back "\"")))
-      (setq mmm-submode-decoration-level 0)
-      ;;
-      ;; What files to invoke the new html-mode for?
-      (add-to-list 'auto-mode-alist '("\\.inc\\'" . html-mode))
-      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . html-mode))
-      (add-to-list 'auto-mode-alist '("\\.php[34]?\\'" . html-mode))
-      (add-to-list 'auto-mode-alist '("\\.[sj]?html?\\'" . html-mode))
-      (add-to-list 'auto-mode-alist '("\\.jsp\\'" . html-mode))
-      ;;
-      ;; What features should be turned on in this html-mode?
-      (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil html-js))
-      (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil embedded-css))
-      (add-to-list 'mmm-mode-ext-classes-alist '(html-mode nil fancy-html))
-      ;;
-      ;; ;; Not exactly related to editing HTML: enable editing help with mouse-3 in all sgml files
-      ;; (defun go-bind-markup-menu-to-mouse3 ()
-      ;;   (define-key sgml-mode-map [(down-mouse-3)] 'sgml-tags-menu))
-      ;; (add-hook 'sgml-mode-hook 'go-bind-markup-menu-to-mouse3)
-
-      (setq auto-mode-alist
-            (cons '("\\.plist\\'" . xml-mode) auto-mode-alist))
-      ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
@@ -353,27 +160,6 @@
       ;; (color-theme-solarized-light)
 ))
 ;;(color-theme-feng-shui)
-
-;;;;;;;;;;;;;;;;
-;; hide-ifdef-mode
-(setq hide-ifdef-read-only t)
-;; C-c @ s -- show-ifdefs
-;; C-c @ h -- hide-ifdefs
-;; C-c @ d -- hide-ifdefs-define
-;; C-c @ u -- hide-ifdefs-undefine
-;; C-c @ C-q -- hide-ifdefs-toggle-read-only
-;; C-c @ D -- hide-ifdefs-set-define-alist
-;; C-c @ U -- hide-ifdefs-use-define-alist
-
-
-(add-hook 'hide-ifdef-mode-hook
-          (lambda ()
-            (unless hide-ifdef-define-alist
-              (setq hide-ifdef-define-alist
-                    '((INode-ETH AT91 WNSIA_ETH)
-                      (Leaf-LP   MSP430)
-                      (Leaf-HP   MSP430 STDIO_SPI))))
-            (hide-ifdef-use-define-alist 'Leaf-HP)))
 
 ;; Bind 'imenu' to right-click in emacs mode
 ;(define-key c-mode-base-map [(down-mouse-3)] 'imenu)
