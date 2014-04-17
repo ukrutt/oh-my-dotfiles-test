@@ -215,8 +215,7 @@
 ;;   (require 'mercurial))
 
 ;;;;;;;;;;;;;;;;
-;; Pager
-;; HHH: Consider removing?
+;; Pager - absolutely essential.  The default 'paging' in Emacs is worthless.
 (with-demoted-errors
   (require 'pager)
   (global-set-key "\C-v"     'pager-page-down)
