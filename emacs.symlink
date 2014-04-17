@@ -8,9 +8,10 @@
 (setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq gnus-directory (expand-file-name "~/Library/Gnus-News/"))
-(setq message-directory (expand-file-name "~/Library/Gnus-Mail/"))
 (setq elisp-directory (expand-file-name "~/Library/Elisp/"))
+(if (file-directory-p elisp-directory)
+    (pushnew elisp-directory load-path :test #'equal))
+
 (setq cygwinp (numberp (string-match "cygwin" (version))))
 (setq macp (numberp (string-match "apple" (version))))
 (setq mingwp (numberp (string-match "mingw" (version))))
@@ -30,9 +31,6 @@
         (let ((null-device "/dev/null")) ad-do-it))
       (ad-activate 'grep-compute-defaults)))
 
-(if (file-directory-p elisp-directory)
-    (pushnew elisp-directory load-path :test #'equal))
-
 (setq ns-pop-up-frames nil) ; Open new file (from Terminal) in same frame
 
 (defun hh-open-terminal-here ()
@@ -44,15 +42,6 @@
 (define-key global-map "\C-ct" 'hh-open-terminal-here)
 ;; (global-set-key [(control c) ?t] 'hh-open-terminal-here)
 (define-key global-map "\C-cf" 'hh-open-finder-here)
-
-;; (setq mac-key-mode t)
-(cond ((require 'mac-key-mode nil t)
-       (mac-key-mode 1)
-       (define-key mac-key-mode-map [(alt l)] 'goto-line)
-       ;; (define-key mac-key-mode-map [(alt p)] 'ps-print-buffer-with-faces)
-       ;; (define-key mac-key-mode-map [(alt w)] 'kill-buffer)
-       (define-key mac-key-mode-map [(alt ctrl t)] 'mac-font-panel-mode)
-       (define-key mac-key-mode-map [(alt t)] 'mac-key-open-terminal)))
 
 (if window-system
     (load-library "hh-fontset"))
@@ -161,15 +150,11 @@
 ))
 ;;(color-theme-feng-shui)
 
-;; Bind 'imenu' to right-click in emacs mode
-;(define-key c-mode-base-map [(down-mouse-3)] 'imenu)
 ;; Bind 'imenu' to right-click in everywhere
 (global-set-key [(down-mouse-3)] 'imenu)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ASM-mode
-
 (add-to-list 'auto-mode-alist '("\\.s43\\'" . asm-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -177,72 +162,6 @@
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 (autoload 'csv-mode "csv-mode"
   "Major mode for editing comma-separated value files." t)
-
-(if (require 'tex-site nil t)
-    (progn
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;; LaTeX
-      ;; (setq TeX-command-Show "File")       ; For some reason, this needs to be here.
-      (setq LaTeX-math-list
-            '((?R LaTeX-math-frac "\\frac{}{}")
-              ;; (?( LaTeX-math-left "\\left - \\right")
-              ;; (?) LaTeX-math-right "\\right")
-              (?v LaTeX-math-vek "\\vek{}")
-              (?V LaTeX-math-mat "\\mat{}")
-              (?N LaTeX-math-int-limits "\\int_{}^{}")
-              (?S LaTeX-math-sum-limits "\\sum_{}^{}")))
-
-      (eval-after-load "latex" '(load "auctex-settings"))
-
-      (defun LaTeX-math-left ()
-        "Insert a \\left - \\right pair"
-        (interactive)
-        (TeX-insert-macro "left"))
-
-      ;; (defun LaTeX-math-right (dollar)
-      ;;   "Insert a \\right"
-      ;;   (interactive "*P")
-      ;;   (LaTeX-math-insert "right" dollar))
-
-      (defun LaTeX-math-vek (dollar)
-        "Insert a \\vek{}"
-        (interactive "*P")
-        (LaTeX-math-insert "vek{}" dollar)
-        (backward-char 1))
-
-      (defun LaTeX-math-mat (dollar)
-        "Insert a \\mat{}"
-        (interactive "*P")
-        (LaTeX-math-insert "mat{}" dollar)
-        (backward-char 1))
-
-      (defun LaTeX-math-int-limits (dollar)
-        "Insert a \\int_{}^{}"
-        (interactive "*P")
-        (LaTeX-math-insert "int_{}^{}" dollar)
-        (backward-char 4))
-
-      (defun LaTeX-math-sum-limits (dollar)
-        "Insert a \\sum_{}^{}"
-        (interactive "*P")
-        (LaTeX-math-insert "sum_{}^{}" dollar)
-        (backward-char 4))))
-
-;; ;; Fink
-;; ;; (add-to-list 'Info-default-directory-list
-;; ;;        (expand-file-name "/sw/share/info/"))
-(if macp
-    (progn
-      (add-to-list 'Info-default-directory-list
-                   (expand-file-name "/usr/local/texlive/2007/texmf/doc/info/"))
-      (add-to-list 'Info-default-directory-list
-                   (expand-file-name "/usr/local/info/"))
-      (add-to-list 'Info-default-directory-list
-                   (expand-file-name "/opt/local/share/info/"))))
-
-
-;; Matlab
-(load "~/.dotfiles/.emacs-matlab")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; bat-mode
@@ -697,8 +616,6 @@ With ARG, show trailing whitespace iff ARG is positive."
 (load-library "graphviz-dot-mode")
 
 (server-start)
-
-(load "~/.dotfiles/.emacs-macros")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom b{\o}r komme p{\aa} slutten, dersom en skal v{\ae}re sikker p{\aa}
