@@ -24,7 +24,7 @@
       (setq xargs-program "C:/cygwin/bin/xargs.exe")
       ;; Prevent issues with the Windows null device (NUL)
       ;; when using cygwin find with rgrep.
-      (defadvice grep-compute-defaults 
+      (defadvice grep-compute-defaults
         (around grep-compute-defaults-advice-null-device)
         "Use cygwin's /dev/null as the null-device."
         (let ((null-device "/dev/null")) ad-do-it))
@@ -149,7 +149,7 @@
   (set-frame-font
    "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
 
-  (add-to-list 'default-frame-alist 
+  (add-to-list 'default-frame-alist
                '(font . "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")))
 
 ;; (create-fontset-from-fontset-spec
@@ -1377,26 +1377,26 @@ With ARG, show trailing whitespace iff ARG is positive."
 ;;   (define-key markdown-mode-map (kbd "<S-tab>") 'markdown-shifttab))
 (cond ((require 'markdown-mode nil t)
        (defun markdown-make ()
-	 (interactive)
-	 (compile "make -k"))
+         (interactive)
+         (compile "make -k"))
        (defun markdown-make-preview ()
-	 (interactive)
-	 (compile "make -k view"))
+         (interactive)
+         (compile "make -k view"))
        (defun markdown-add-markdown-file-variable ()
-	 (interactive)
-	 (markdown-mode)
-	 (save-excursion
-	   (save-restriction
-	     (widen)
-	     (goto-char 1)
-	     (setq markdown-variable-line "<!-- -*- Mode: Markdown -*- -->\n\n")
-	     (setq buffer-first-chars
-		   (buffer-substring 1
-				     (min 32 (point-max))))
-	     (if (eq t (compare-strings markdown-variable-line 1 31
-					buffer-first-chars 1 31))
-		 nil
-	       (insert markdown-variable-line)))))
+         (interactive)
+         (markdown-mode)
+         (save-excursion
+           (save-restriction
+             (widen)
+             (goto-char 1)
+             (setq markdown-variable-line "<!-- -*- Mode: Markdown -*- -->\n\n")
+             (setq buffer-first-chars
+                   (buffer-substring 1
+                                     (min 32 (point-max))))
+             (if (eq t (compare-strings markdown-variable-line 1 31
+                                        buffer-first-chars 1 31))
+                 nil
+               (insert markdown-variable-line)))))
        (define-key markdown-mode-map (kbd "<S-tab>") 'markdown-shifttab)
        (define-key markdown-mode-map (kbd "C-c C-c o") 'markdown-make-preview)))
 
