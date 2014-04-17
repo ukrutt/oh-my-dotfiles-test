@@ -2,6 +2,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; .emacs file
+(message "*** Start of .emacs ***")
 
 (require 'cl)
 (setq debug-on-error t)
@@ -1427,3 +1428,5 @@ With ARG, show trailing whitespace iff ARG is positive."
 (put 'downcase-region 'disabled nil)
 
 (put 'overwrite-mode 'disabled t)
+
+(message "*** End of .emacs ***")
