@@ -238,48 +238,34 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Diverse settinger
 
-;; Startup message must be inhibited due to a bug.
-(setq inhibit-startup-message t)
-
 ;;;;;;;;;;;;;;;;
 ;; font-lock
 (require 'font-lock)
 (global-font-lock-mode t)
-(with-demoted-errors
-  (load-library "hh-font-lock-colors")
-  (hh-set-faces hh-colors))
+;; (with-demoted-errors
+;;   (load-library "hh-font-lock-colors")
+;;   (hh-set-faces hh-colors))
 
 (setq-default case-fold-search t)
-
-;; Tester "ekstra luft" mellom linjer:
-;; (setq default-line-spacing nil)
-(defun set-line-spacing-2 ()
-  (interactive)
-  (setq line-spacing 2))
-(defun set-line-spacing-1 ()
-  (interactive)
-  (setq line-spacing 1))
-(defun set-line-spacing-nil ()
-  (interactive)
-  (setq line-spacing nil))
 
 ;; Line no and coloumn no in the modeline
 (column-number-mode t)
 
-;; Slippe {\aa} posisjonere med mus n{\aa}r en kopierer noe
-(setq mouse-yank-at-point t)
+;; ;; Slippe {\aa} posisjonere med mus n{\aa}r en kopierer noe
+;; (setq mouse-yank-at-point t)
 
-;; Liker ikke `pip' n{\aa}r jeg gj{\o}r noe feil, derfor:
-(setq-default visible-bell t)
+;; ;; Liker ikke `pip' n{\aa}r jeg gj{\o}r noe feil, derfor:
+;; (setq-default visible-bell t)
 
 ;; iswitchb.  bedre til aa hoppe mellom buffere.
 (iswitchb-mode t)
 
+;; Better mode to select buffer
 (require 'bs)
 (global-set-key "\C-x\C-b" 'bs-show)
 
-;; Begraver veldig ofte bufferet jeg er i...
-(global-set-key [(control x) (control z)] 'bury-buffer)
+;; ;; Begraver veldig ofte bufferet jeg er i...
+;; (global-set-key [(control x) (control z)] 'bury-buffer)
 
 ;; ;; Jeg er vant til aa bruke F9 for aa oppdatere bufferet fra det paa
 ;; ;; disk.
@@ -291,10 +277,10 @@
 ;; hl-line-mode er interessant for aa highlighte linja jeg er paa
 ;; HHH: Check if defaults work just as well or better...
 ;; (global-hl-line-mode t)
-(make-face 'hl-face)
-(set-face-attribute 'hl-face nil :inherit 'highlight)
-(set-face-attribute 'hl-face nil :background "#ffffaa")
-(setq hl-line-face 'hl-face)
+;; (make-face 'hl-face)
+;; (set-face-attribute 'hl-face nil :inherit 'highlight)
+;; (set-face-attribute 'hl-face nil :background "#ffffaa")
+;; (setq hl-line-face 'hl-face)
 
 ;; scroll-, menu- og tool-bar...
 (if window-system (set-scroll-bar-mode 'right)) ; HHH: necessary?
@@ -310,7 +296,6 @@
 ;; On the Mac I am using a "Mighty Mouse"... and its scroller is
 ;; far more sensitive than any other scroller.
 (if macp
-    ;; HHH: necesssary?
     (setq mouse-wheel-scroll-amount
           '(1
             ((shift) . 5)
@@ -403,11 +388,6 @@ With ARG, show trailing whitespace iff ARG is positive."
   ;;      inclusion in Emacs?
   (load "recentf-minibuffer")
   (define-key ctl-x-map "\C-r" 'recentf-select-file))
-
-;; mouse-wheel-mode seems not to work in the Mac :(
-(unless macp                     ; HHH: This seems to happen anyway...
-  (mouse-wheel-mode t)
-  (setq mouse-wheel-follow-mouse t))
 
 ;; Paren mode
 (show-paren-mode t)
