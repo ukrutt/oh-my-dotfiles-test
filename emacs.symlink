@@ -283,12 +283,10 @@
 ;; (setq hl-line-face 'hl-face)
 
 ;; scroll-, menu- og tool-bar...
-(if window-system (set-scroll-bar-mode 'right)) ; HHH: necessary?
-(unless (string= window-system "mac")
-  (menu-bar-mode -1)
-  (global-set-key [(control c) ?b] 'menu-bar-mode))
-
-(if window-system (tool-bar-mode -1)) ; HHH: Why restrict to window system?
+;; HHH: scroll bar setting possibly necessary in Linux and Cygwin
+;; (set-scroll-bar-mode 'right)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 ;; Scroll settings
 (setq scroll-margin 2)                  ; Keep 2 lines visible
 (setq scroll-step 3)                    ; Jump by 4 lines at a time
