@@ -71,6 +71,9 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 #   export EDITOR='mvim'
 # fi
 
+# Preferred editor on command-line is still vim
+export EDITOR=vim
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
