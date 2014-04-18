@@ -43,8 +43,8 @@
 ;; (global-set-key [(control c) ?t] 'hh-open-terminal-here)
 (define-key global-map "\C-cf" 'hh-open-finder-here)
 
-(if window-system
-    (load-library "hh-fontset"))
+;; (if window-system
+;;     (load-library "hh-fontset"))
 
 (when macp
   (set-frame-font
@@ -138,17 +138,17 @@
    (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
 
 
-;;;;;;;;;;;;;;;;
-;; Other colors
-(if window-system
-    (progn
-      (require 'color-theme)
-      (color-theme-initialize)
-      (color-theme-vim-colors)
-      ;; (color-theme-solarized-dark)
-      ;; (color-theme-solarized-light)
-))
-;;(color-theme-feng-shui)
+;; ;;;;;;;;;;;;;;;;
+;; ;; Other colors
+;; (if window-system
+;;     (progn
+;;       (require 'color-theme)
+;;       (color-theme-initialize)
+;;       (color-theme-vim-colors)
+;;       ;; (color-theme-solarized-dark)
+;;       ;; (color-theme-solarized-light)
+;; ))
+;; ;;(color-theme-feng-shui)
 
 ;; Bind 'imenu' to right-click in everywhere
 (global-set-key [(down-mouse-3)] 'imenu)
