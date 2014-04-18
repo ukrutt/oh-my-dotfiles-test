@@ -79,3 +79,4 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Private data is (possibly) in the file below
 [[ -r ${HOME}/.private_profile ]] && source ${HOME}/.private_profile
+: # Do nothing; this is so our prompt doesn't get cluttered
