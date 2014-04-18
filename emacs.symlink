@@ -286,7 +286,7 @@
 ;; HHH: scroll bar setting possibly necessary in Linux and Cygwin
 ;; (set-scroll-bar-mode 'right)
 (menu-bar-mode -1)
-(tool-bar-mode -1)
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; Robust to text mode
 ;; Scroll settings
 (setq scroll-margin 2)                  ; Keep 2 lines visible
 (setq scroll-step 3)                    ; Jump by 4 lines at a time
