@@ -42,7 +42,10 @@ You'll need to remove ${DOTFILES} if you want to install.
 fi
 
 echo "\033[0;34mCloning Oh My Dotfiles...\033[0m"
-/usr/bin/env git clone ${GIT_ORIGIN} ${DOTFILES}
+echo "git clone ${GIT_ORIGIN} ${DOTFILES}"
+TMP_OMD=$(mktemp -d 'omd_XXXXXX')
+/usr/bin/env git clone ${GIT_ORIGIN} ${TMP_OMD}
+mv ${TMP_OMD} ${DOTFILES}
 echo "\033[0;34mDownloading Oh My Zsh...\033[0m"
 cd ${DOTFILES}
 /usr/bin/env git submodule init
