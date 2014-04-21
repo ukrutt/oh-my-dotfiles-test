@@ -1,0 +1,28 @@
+# -*- Mode: Conf -*-
+
+[ui]
+askusername = True
+ignore = ~/.dotfiles/.hgignore
+verbose = True
+
+[web]
+# cacerts = /etc/hg-dummy-cert.pem
+cacerts =
+
+[auth]
+# Add stuff on the form
+mysite.prefix = https://awesome-url.com/
+mysite.username = awesome-username
+mysite.password = awesome-beer
+
+[extensions]
+rebase =
+graphlog =
+convert =
+mq =
+# hgsubversion = /usr/local/lib/python2.7/site-packages/hgsubversion
+# hgsubversion =
+# hgk=/Library/Python/2.6/site-packages/hgext/hgk.py
+# mercurial_keyring =
+hgext.bookmarks =
+hggit =

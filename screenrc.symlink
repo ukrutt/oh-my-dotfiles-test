@@ -1,0 +1,14 @@
+# -*- Mode: Sh -*-
+# deflogin on
+escape ^Bb
+defscrollback 2000
+logtstamp on
+startup_message off
+
+#### Example from info pages
+# caption always "%?%F%{.R.}%?%3n %t%? [%h]%?"
+#### Original inspiration
+# caption always "%{dw} .- %{dB} %-w%50>%{KY}[%t]%{dB}%+w %{dB}%<%>%=%C:%s %d/%m/%Y %{dw} -. "
+#### Current caption
+caption always "%{wK} %-Lw%50>%?%F%{kG}%:%{kw}%?[%t]%{wK}%+Lw %{wK}%<%>%=%C:%s %d-%m-%Y "
+# shell -/bin/zsh
