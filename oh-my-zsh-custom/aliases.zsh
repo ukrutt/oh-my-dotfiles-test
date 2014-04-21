@@ -17,6 +17,8 @@ alias cp="cp -i"
 if [[ "$(uname -s)" == "Darwin" ]]; then
     alias ls='ls -F'
     alias ll='ls -lrt'
+    # The CLICOLOR set to something allows colored listings (ls) on Mac OS X
+    export CLICOLOR=
 else
     # I am at a regular UNIX or cygwin account
     alias ls='ls --color=auto -F'
