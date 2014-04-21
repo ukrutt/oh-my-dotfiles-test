@@ -422,7 +422,7 @@ With ARG, show trailing whitespace iff ARG is positive."
 ;;(pushnew '("config"   . shell-script-mode)    auto-mode-alist :test #'equal)
 (pushnew '("\\.\\(aliases\\|\\(cshrc\\|login\\)\.user\\)"
            . shell-script-mode)    auto-mode-alist :test #'equal)
-
+(pushnew '("\\.zsh"     . shell-script-mode)    auto-mode-alist :test #'equal)
 
 ;; (global-set-key [(control c) ?\;] 'comment-region)
 (setq comment-style 'indent)            ; Consider using the default
