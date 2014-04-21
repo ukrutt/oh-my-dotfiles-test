@@ -1,0 +1,632 @@
+;; -*- Mode: Emacs-Lisp -*-
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; .emacs file
+(message "*** Start of .emacs ***")
+
+(require 'cl)
+;; (setq debug-on-error t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq elisp-directory (expand-file-name "~/Library/Elisp/"))
+(if (file-directory-p elisp-directory)
+    (pushnew elisp-directory load-path :test #'equal))
+
+(setq cygwinp (numberp (string-match "cygwin" (version))))
+(setq macp (numberp (string-match "apple" (version))))
+(setq mingwp (numberp (string-match "mingw" (version))))
+
+;; Magic to make rgrep work on the Windows version of Emacs
+(if mingwp
+    (progn
+      ;; Set paths for Cygwin programs
+      (setq find-program "C:/cygwin/bin/find.exe")
+      (setq grep-program "C:/cygwin/bin/grep.exe")
+      (setq xargs-program "C:/cygwin/bin/xargs.exe")
+      ;; Prevent issues with the Windows null device (NUL)
+      ;; when using cygwin find with rgrep.
+      (defadvice grep-compute-defaults
+        (around grep-compute-defaults-advice-null-device)
+        "Use cygwin's /dev/null as the null-device."
+        (let ((null-device "/dev/null")) ad-do-it))
+      (ad-activate 'grep-compute-defaults)))
+
+(setq ns-pop-up-frames nil) ; Open new file (from Terminal) in same frame
+
+(defun hh-open-terminal-here ()
+  (interactive)
+  (shell-command "open -a Terminal ."))
+(defun hh-open-finder-here ()
+  (interactive)
+  (shell-command "open ."))
+(define-key global-map "\C-ct" 'hh-open-terminal-here)
+;; (global-set-key [(control c) ?t] 'hh-open-terminal-here)
+(define-key global-map "\C-cf" 'hh-open-finder-here)
+
+;; (if window-system
+;;     (load-library "hh-fontset"))
+
+(when macp
+  (set-frame-font
+   "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+
+  (add-to-list 'default-frame-alist
+               '(font . "-apple-Consolas-medium-normal-normal-*-*-*-*-*-m-0-iso10646-1")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Scheme
+(setq scheme-program-name
+      "/usr/local/bin/scheme")
+(require 'xscheme)
+(defun my-scheme-mode-hook ()
+  (define-key scheme-mode-map "\C-m" 'reindent-then-newline-and-indent))
+(add-hook 'scheme-mode-hook 'my-scheme-mode-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python
+(add-to-list 'load-path "~/Library/Elisp/python-mode/")
+(setq py-install-directory "~/Library/Elisp/python-mode/")
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (set (make-variable-buffer-local 'beginning-of-defun-function)
+                 'py-beginning-of-def-or-class)
+            (setq comment-style 'indent)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; cc-mode
+(defun my-c-mode-common-hook ()
+  ;; add my personal style and set it for the current buffer
+                                        ;(c-add-style "PERSONAL" my-c-style t)
+  ;; other customizations
+  (setq tab-width 4
+        ;; this will make sure spaces are used instead of tabs
+        indent-tabs-mode nil)
+  (setq fill-column 76)
+  ;; we like auto-newline and hungry-delete
+  ;; (c-toggle-auto-state 1)    ; I don't like auto-newline
+  ;; (c-toggle-hungry-state 1)  ; I don't like hungry-delete
+  (setq comment-start "// "     ; I do like line-by-line comments
+        comment-end   "")
+  (setq comment-style 'indent)
+  ;; (setq buffer-file-coding-system 'iso-latin-1-dos)
+  ;; key bindings for all supported languages.  We can put these in
+  ;; c-mode-base-map because c-mode-map, c++-mode-map, objc-mode-map,
+  ;; java-mode-map, idl-mode-map, and pike-mode-map inherit from it.
+  (define-key c-mode-base-map "\C-c\C-c" 'compile)
+  (define-key c-mode-base-map "\C-m" 'c-context-line-break))
+(setq c-default-style "k&r")
+(setq c-basic-offset 4)                 ;; C "indent"
+(setq compilation-scroll-output t)
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(defun my-makefile-mode-hook ()
+  (define-key makefile-mode-map "\C-c\C-c" 'compile))
+(add-hook 'makefile-mode-hook 'my-makefile-mode-hook)
+
+(add-to-list 'auto-mode-alist '("\\.gmk\\'" . makefile-gmake-mode))
+
+(add-to-list 'auto-mode-alist '("\\.pde\\'" . java-mode))
+
+;;;;;;;;;;;;;;;;
+;; Faces in C
+(font-lock-add-keywords
+ 'c-mode
+ '(("\\<\\(CCC.*?:\\)" 1 font-lock-warning-face t)))
+
+;; (setq private-dangerous-functions
+;;       '("mem_Alloc" "mem_Free"
+;;         "serial_AllocMessage" "serial_FreeMessage"
+;;         "m_AllocMessage" "m_FreeMessage"
+;;         "rand" "srand"
+;;         "OS_ENTER_CRITICAL"
+;;         "OS_EXIT_CRITICAL"
+;;         "sys_CRITICAL_SECTION_BEGIN"
+;;         "sys_CRITICAL_SECTION_END"))
+
+;; (with-demoted-errors
+;;   (load-library "cc-critical-warnings"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C# / C-sharp
+(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
+(setq auto-mode-alist
+   (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+
+
+;; ;;;;;;;;;;;;;;;;
+;; ;; Other colors
+;; (if window-system
+;;     (progn
+;;       (require 'color-theme)
+;;       (color-theme-initialize)
+;;       (color-theme-vim-colors)
+;;       ;; (color-theme-solarized-dark)
+;;       ;; (color-theme-solarized-light)
+;; ))
+;; ;;(color-theme-feng-shui)
+
+;; Bind 'imenu' to right-click in everywhere
+(global-set-key [(down-mouse-3)] 'imenu)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ASM-mode
+(add-to-list 'auto-mode-alist '("\\.s43\\'" . asm-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CSV-mode
+(add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
+(autoload 'csv-mode "csv-mode"
+  "Major mode for editing comma-separated value files." t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; bat-mode
+(setq auto-mode-alist
+      (append
+       (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
+       ;; For DOS init files
+       ;; (list (cons "CONFIG\\."   'bat-mode))
+       (list (cons "AUTOEXEC\\." 'bat-mode))
+       auto-mode-alist))
+
+(autoload 'bat-mode "bat-mode"
+  "DOS and Windows BAT files" t)
+
+(defun pdf-print-buffer-with-faces ()
+  "convert current buffer to a PDF file with faces."
+  (interactive)
+  (let* ((file-name ;;(concat "/tmp/pdf-print-" (emacs-pid) "-" (buffer-name)))
+          (format "/tmp/pdf-print-%s-%s" (emacs-pid) (buffer-name)))
+         (ps-file-name (concat file-name ".ps"))
+         (pdf-file-name (concat file-name ".pdf")))
+    (save-excursion
+      (save-restriction
+        (progn
+          (ps-print-buffer-with-faces ps-file-name)
+          (shell-command (concat "ps2pdf " ps-file-name " " pdf-file-name))
+          (if macp
+              (shell-command (concat "open " pdf-file-name))))))))
+
+(when macp
+  (global-set-key [(alt p)] 'pdf-print-buffer-with-faces)
+
+  (if (functionp 'mac-print-mode)
+      (mac-print-mode)))
+
+(setq ps-number-of-columns 2)
+(setq ps-landscape-mode t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; "Small" Utilities
+
+;; ;;;;;;;;;;;;;;;;
+;; ;; PCL-SVN
+;; (with-demoted-errors
+;;   (require 'psvn)
+;;   (global-set-key [(control c) ?s] 'svn-status))
+
+;; ;;;;;;;;;;;;;;;;
+;; ;;
+;; (with-demoted-errors
+;;   (require 'mercurial))
+
+;;;;;;;;;;;;;;;;
+;; Pager - absolutely essential.  The default 'paging' in Emacs is worthless.
+(with-demoted-errors
+  (require 'pager)
+  (global-set-key "\C-v"     'pager-page-down)
+  (global-set-key [next]     'pager-page-down)
+  (global-set-key "\ev"      'pager-page-up)
+  (global-set-key [prior]    'pager-page-up)
+  (global-set-key "\M-p"     'pager-row-up)
+  (global-set-key '[M-up]    'pager-row-up)
+  (global-set-key '[M-kp-8]  'pager-row-up)
+  (global-set-key "\M-n"     'pager-row-down)
+  (global-set-key '[M-down]  'pager-row-down)
+  (global-set-key '[M-kp-2]  'pager-row-down))
+
+;;;;;;;;;;;;;;;;
+;; Wdired
+(require 'wdired)
+(define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
+(setq wdired-use-interactive-rename t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Diverse settinger
+
+;;;;;;;;;;;;;;;;
+;; font-lock
+(require 'font-lock)
+(global-font-lock-mode t)
+;; (with-demoted-errors
+;;   (load-library "hh-font-lock-colors")
+;;   (hh-set-faces hh-colors))
+
+(setq-default case-fold-search t)
+
+;; Line no and coloumn no in the modeline
+(column-number-mode t)
+
+;; ;; Slippe {\aa} posisjonere med mus n{\aa}r en kopierer noe
+;; (setq mouse-yank-at-point t)
+
+;; ;; Liker ikke `pip' n{\aa}r jeg gj{\o}r noe feil, derfor:
+;; (setq-default visible-bell t)
+
+;; iswitchb.  bedre til aa hoppe mellom buffere.
+(iswitchb-mode t)
+
+;; Better mode to select buffer
+(require 'bs)
+(global-set-key "\C-x\C-b" 'bs-show)
+
+;; Used to C-x C-z to bury my current buffer
+(global-set-key [(control x) (control z)] 'bury-buffer)
+
+;; ;; Jeg er vant til aa bruke F9 for aa oppdatere bufferet fra det paa
+;; ;; disk.
+;; ;; (Se info [(emacs)Customization -> Key Bindings -> Init Rebinding]
+;; ;; for mer tips om tastebinding.)
+;; (global-set-key [f9] 'revert-buffer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hl-line-mode er interessant for aa highlighte linja jeg er paa
+;; HHH: Check if defaults work just as well or better...
+;; (global-hl-line-mode t)
+;; (make-face 'hl-face)
+;; (set-face-attribute 'hl-face nil :inherit 'highlight)
+;; (set-face-attribute 'hl-face nil :background "#ffffaa")
+;; (setq hl-line-face 'hl-face)
+
+;; scroll-, menu- og tool-bar...
+;; HHH: scroll bar setting possibly necessary in Linux and Cygwin
+;; (set-scroll-bar-mode 'right)
+(menu-bar-mode -1)
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; Robust to text mode
+;; Scroll settings
+(setq scroll-margin 2)                  ; Keep 2 lines visible
+(setq scroll-step 3)                    ; Jump by 4 lines at a time
+
+;; On the Mac I am using a "Mighty Mouse"... and its scroller is
+;; far more sensitive than any other scroller.
+(if macp
+    (setq mouse-wheel-scroll-amount
+          '(1
+            ((shift) . 5)
+            ((control) . nil))))
+
+;; (setq default-buffer-file-coding-system 'iso-latin-1-dos)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Faces
+(set-face-attribute 'mode-line nil
+                    :inherit 'variable-pitch)
+(blink-cursor-mode t)
+(setq-default blink-cursor-delay 0) ;; funker ikke
+(setq-default cursor-type '(bar . 2))
+;; (setq-default cursor-type t)
+(global-set-key [(control h) ?a] 'apropos)
+
+;; Whitespace
+(setq default-indicate-empty-lines t)
+(setq-default show-trailing-whitespace t)
+(defun show-trailing-whitespace-on ()
+  "Show trailing whitespace.
+See also `toggle-show-trailing-whitespace'
+and the variable `show-trailing-whitespace'."
+  (interactive)
+  (setq show-trailing-whitespace t))
+(defun show-trailing-whitespace (arg)
+  "Toggle showing of trailing whtespace,
+i.e., toggle the value of the variable `show-trailing-whitespace'.
+With ARG, show trailing whitespace iff ARG is positive."
+  (interactive "P")
+  (setq show-trailing-whitespace
+        (if (null arg)
+            (not show-trailing-whitespace)
+          (> (prefix-numeric-value arg) 0))))
+
+(defun hh-indent-and-whitespace ()
+  "Do indentation of a buffer and clean up whitespace"
+  (interactive)
+  ;; (mark-whole-buffer)
+  (indent-region (point-min) (point-max))
+  (whitespace-cleanup)
+  (untabify (point-min) (point-max)))
+
+(setq whitespace-check-indent-whitespace nil) ; I prefer 'untabified' buffers
+
+;; Enables highlighting of the marked region ...
+(transient-mark-mode t)
+;; ... and usage of the mark even if region isn't highlighted.
+                                        ;turned off temporarily, due to introduction of (delete-selection-mode t)
+                                        ;(setq mark-even-if-inactive t)
+;; Typing text replaces the region...
+(delete-selection-mode t)               ; HHH: Seems not to work...
+
+(setq backup-by-copying t)              ; HHH: Necessary?
+
+(which-function-mode t) ; Displays name of the function in the modeline
+(add-to-list 'which-func-modes 'python-mode)
+(add-to-list 'which-func-modes 'csharp-mode)
+
+;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+;; (add-hook 'text-mode-hook 'visual-line-mode)
+
+(setq confirm-kill-emacs 'y-or-n-p)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+;; slash after directory names
+(setq uniquify-trailing-separator-p t)
+
+;; Desktop
+;(debug-on-entry 'desktop-save)
+;(debug-on-entry 'desktop-read)
+(if (>= emacs-major-version 22)
+    (desktop-save-mode 1)
+  (desktop-load-default)
+  (desktop-read))
+
+;; Save position in file -- just like VIM!
+(setq-default save-place t)
+(require 'saveplace)
+
+;; Recent files
+;; (require 'recentf)
+(setq recentf-auto-cleanup 'never) ;Needs to be before recentf-mode is entered.
+(recentf-mode 1)
+(setq recentf-max-saved-items 200)
+(with-demoted-errors
+  ;; HHH: I rely on this function daily... consider submitting for
+  ;;      inclusion in Emacs?
+  (load "recentf-minibuffer")
+  (define-key ctl-x-map "\C-r" 'recentf-select-file))
+
+;; Paren mode
+(show-paren-mode t)
+(setq show-paren-style 'mixed)
+
+;; (setq dired-recursive-deletes 'top)
+(define-key dired-mode-map "\C-c\C-c" 'compile)
+
+;; Adding '.svn' to list of ignored folders for rgrep
+;; HHH: Consider adding .git...
+(setq grep-find-ignored-directories '("CVS" ".hg" "{arch}" ".svn"))
+
+;; ;;;;;;;;;;;;;;;;
+;; ;; aspell instead of ispell doesn't work in emacs 21
+;; ;; (setq-default ispell-program-name "aspell")
+;; ;; (ispell-change-dictionary "american")
+;; (setq ispell-dictionary "american")
+;; ;; (setq ispell-program-name "/usr/local/bin/ispell")
+
+;; ;; (with-demoted-errors
+;; ;;   (require 'setnu)			; use: M-x setnu-mode
+;; ;;   (setq setnu-line-number-format "%4d "))
+;; ;; (require 'line-num) ; setnu.el seems to work better.
+
+;; ;; Line wrapping at word boundaries (not the same as folding!)
+;; ;; (require 'longlines)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Auto-modus!
+
+(pushnew '("\\.gnus"    . emacs-lisp-mode)      auto-mode-alist :test #'equal)
+(pushnew '("\\.elc\\'"  . emacs-lisp-mode)      auto-mode-alist :test #'equal)
+(pushnew '("\\.emacs"   . emacs-lisp-mode)      auto-mode-alist :test #'equal)
+;;(pushnew '("config"   . shell-script-mode)    auto-mode-alist :test #'equal)
+(pushnew '("\\.\\(aliases\\|\\(cshrc\\|login\\)\.user\\)"
+           . shell-script-mode)    auto-mode-alist :test #'equal)
+(pushnew '("\\.zsh"     . shell-script-mode)    auto-mode-alist :test #'equal)
+
+;; (global-set-key [(control c) ?\;] 'comment-region)
+(setq comment-style 'indent)            ; Consider using the default
+
+;; ;; FTP
+;; (setq ange-ftp-default-user "anonymous")
+;; (auto-compression-mode t)
+
+;; HHH 1) Need to check these frame sizes
+;; HHH 2) They should be available only when I have a window
+(defun hh-enlarge-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 1) (top . 4)
+                                 (width . 80) (height . 53))))
+
+(defun hh-laptop-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 1) (top . 20)
+                                 (width . 177) (height . 57))))
+
+(defun hh-tall-laptop-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 1) (top . 22)
+                                 (width . 80) (height . 57))))
+
+(defun hh-huge-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 3) (top . 24)
+                                 (width . 222) (height . 70))))
+
+(defun hh-humongous-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 1) (top . 21)
+                                 (width . 222) (height . 88))))
+
+(defun hh-medium-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((left . 3) (top . 22)
+                                 (width . 199) (height . 57))))
+
+(defun hh-132-frame ()
+  (interactive)
+  (modify-frame-parameters nil '( ;; (left . 3) (top . 22)
+                                 (width . 132) (height . 60))))
+
+(defun hh-80-width ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 80))))
+
+(defun hh-132-width ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 132))))
+
+(defun hh-133-width ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 133))))
+
+(defun hh-134-width ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 134))))
+
+(defun hh-135-width ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 135))))
+
+(defun hh-tall-frame ()
+  (interactive)
+  (modify-frame-parameters nil '( ;;(left . 1442) (top . -1000)
+                                 (width . 193) (height . 145))))
+
+(defun hh-tall-frame-cyg ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 165) (height . 145))))
+
+(defun hh-standard-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 80) (height . 40))))
+
+(defun hh-quad-frame ()
+  (interactive)
+  (modify-frame-parameters nil '((width . 160) (height . 80))))
+
+(defun hh-split-window ()
+  (interactive)
+  (delete-other-windows)
+  (split-window-horizontally 80)
+  (other-window 1)
+  (split-window-vertically 20)
+  (other-window 1)
+  (split-window-horizontally)
+  (other-window 2))
+
+(defun fullscreen (&optional f)
+  (interactive)
+  (set-frame-parameter f 'fullscreen
+                       (if (frame-parameter f 'fullscreen)
+                           nil
+                         'fullboth)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org-mode
+
+(when (>= emacs-major-version 24)
+  (require 'org-install)
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+  (setq org-log-done t)
+  (defun org-add-org-file-variable ()
+    (interactive)
+    (org-mode)
+    (save-excursion
+      (save-restriction
+        (widen)
+        (goto-char 1)
+        (setq org-variable-line "# -*- Mode: Org -*-\n\n")
+        (setq buffer-fiorg-chars
+              (buffer-substring 1
+                                (min 21 (point-max))))
+        (if (eq t (compare-strings org-variable-line 1 20
+                                   buffer-fiorg-chars 1 20))
+            nil
+          (insert org-variable-line)))))
+
+  ;; reStructuredText (a little like markdown)
+  (require 'rst)
+  (setq auto-mode-alist
+        (append '(("\\.rst$" . rst-mode)) auto-mode-alist))
+  (defun rst-add-rst-file-variable ()
+    (interactive)
+    (rst-mode)
+    (save-excursion
+      (save-restriction
+        (widen)
+        (goto-char 1)
+        (setq rst-variable-line ".. -*- Mode: Rst -*-\n\n")
+        (setq buffer-first-chars
+              (buffer-substring 1
+                                (min 21 (point-max))))
+        (if (eq t (compare-strings rst-variable-line 1 20
+                                   buffer-first-chars 1 20))
+            nil
+          (insert rst-variable-line)))))
+  (add-hook 'rst-adjust-hook 'rst-toc-update))
+
+;; ;; outline-magic
+;; (require 'outline-magic)
+
+;; this will make sure spaces are used instead of tabs
+(setq-default indent-tabs-mode nil)
+
+
+(autoload 'markdown-mode "markdown-mode.el"
+   "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+   (cons '("\\.text" . markdown-mode) auto-mode-alist))
+(cond ((require 'markdown-mode nil t)
+       (defun markdown-make ()
+         (interactive)
+         (compile "make -k"))
+       (defun markdown-make-preview ()
+         (interactive)
+         (compile "make -k view"))
+       (defun markdown-add-markdown-file-variable ()
+         (interactive)
+         (markdown-mode)
+         (save-excursion
+           (save-restriction
+             (widen)
+             (goto-char 1)
+             (setq markdown-variable-line "<!-- -*- Mode: Markdown -*- -->\n\n")
+             (setq buffer-first-chars
+                   (buffer-substring 1
+                                     (min 32 (point-max))))
+             (if (eq t (compare-strings markdown-variable-line 1 31
+                                        buffer-first-chars 1 31))
+                 nil
+               (insert markdown-variable-line)))))
+       (define-key markdown-mode-map (kbd "<S-tab>") 'markdown-shifttab)
+       (define-key markdown-mode-map (kbd "C-c C-c o") 'markdown-make-preview)))
+
+(with-demoted-errors
+  (load-library "graphviz-dot-mode"))
+
+(server-start)
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; Custom b{\o}r komme p{\aa} slutten, dersom en skal v{\ae}re sikker p{\aa}
+;; ;; at den f{\aa}r virkning...
+;; (setq custom-file "~/.dotfiles/.emacs-custom")
+;; (load custom-file)
+
+(put 'narrow-to-region 'disabled nil)
+
+(put 'gnus 'disabled t)
+
+(put 'print-buffer 'disabled t)
+
+(put 'print-region 'disabled t)
+
+(put 'upcase-region 'disabled nil)
+
+(put 'downcase-region 'disabled nil)
+
+(put 'overwrite-mode 'disabled t)
+
+(message "*** End of .emacs ***")
