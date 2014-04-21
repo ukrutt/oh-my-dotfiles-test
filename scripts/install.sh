@@ -30,7 +30,7 @@ fail () {
 }
 
 setup_gitconfig () {
-  if ! [ -f git/gitconfig.symlink ]
+  if ! [ -f ${DOTFILES_ROOT}/gitconfig.symlink ]
   then
     info 'setup gitconfig'
 
@@ -45,7 +45,7 @@ setup_gitconfig () {
     user ' - What is your github author email?'
     read -e git_authoremail
 
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.symlink.example > git/gitconfig.symlink
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" ${DOTFILES_ROOT}/gitconfig.symlink.example > ${DOTFILES_ROOT}/gitconfig.symlink
 
     success 'gitconfig'
   fi
@@ -131,7 +131,7 @@ install_dotfiles () {
 echo "DOTFILES_ROOT is '${DOTFILES_ROOT}'"
 echo "dirname is $(dirname $0)"
 
-# setup_gitconfig
+setup_gitconfig
 install_dotfiles
 
 # # If we're on a Mac, let's install and setup homebrew.
