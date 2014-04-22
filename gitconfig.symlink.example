@@ -1,0 +1,22 @@
+[user]
+	name = AUTHORNAME
+	email = AUTHOREMAIL
+[credential]
+        helper = GIT_CREDENTIAL_HELPER
+[push]
+	default = upstream
+[alias]
+	st = status -sb
+	logdo = log --decorate --oneline
+	logdog = log --decorate --oneline --graph
+	logdoga = log --decorate --oneline --graph --all
+	ci = commit
+	co = checkout
+	root = !pwd
+[core]
+	autocrlf = input
+[color]
+        diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
