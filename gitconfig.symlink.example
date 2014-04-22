@@ -1,23 +1,23 @@
 [user]
-	name = AUTHORNAME
-	email = AUTHOREMAIL
+    name = AUTHORNAME
+    email = AUTHOREMAIL
 [credential]
-        helper = GIT_CREDENTIAL_HELPER
+    helper = GIT_CREDENTIAL_HELPER
 [push]
-	default = upstream
+    default = upstream
 [alias]
-	st = status -sb
-	logdo = log --decorate --oneline
-	logdog = log --decorate --oneline --graph
-	logdoga = log --decorate --oneline --graph --all
-	ci = commit
-	co = checkout
-	root = !pwd
+    st = status -sb
+    logdo = log --decorate --oneline
+    logdog = log --decorate --oneline --graph
+    logdoga = log --decorate --oneline --graph --all
+    ci = commit
+    co = checkout
+    root = !pwd
 [core]
-	excludesfile = ~/.gitignore-global
-	autocrlf = input
+    excludesfile = ~/.gitignore-global
+    autocrlf = input
 [color]
-        diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
