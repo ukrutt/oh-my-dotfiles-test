@@ -1,8 +1,3 @@
-[user]
-    name = AUTHORNAME
-    email = AUTHOREMAIL
-[credential]
-    helper = GIT_CREDENTIAL_HELPER
 [push]
     default = upstream
 [alias]
@@ -21,3 +16,8 @@
     status = auto
     branch = auto
     interactive = auto
+[user]
+    name = AUTHORNAME
+    email = AUTHOREMAIL
+[credential]
+    helper = GIT_CREDENTIAL_HELPER
