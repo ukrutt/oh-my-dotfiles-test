@@ -2,7 +2,7 @@
 
 [ui]
 askusername = True
-ignore = ~/.dotfiles/.hgignore
+ignore = ~/.hgignore
 verbose = True
 
 [web]

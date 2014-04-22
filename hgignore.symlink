@@ -1,0 +1,9 @@
+# -*- Mode: Conf -*-
+# Not quite, but close enough.
+
+# Use glob syntax
+syntax: glob
+.DS_Store                       # Ubiquitous on Mac
+*~                              # Emacs/vi backup files
+*.pyc                           # Python compiled files
+HG_IGNORE                       # Folder where stuf below is ignored
