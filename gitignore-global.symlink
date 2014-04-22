@@ -1,0 +1,11 @@
+# -*- Mode: Conf -*-
+# Not quite, but close enough.
+
+# Ubiquitous on Mac
+.DS_Store
+# Emacs/vi backup files
+*~
+# Python compiled files
+*.pyc
+# Folder where stuf below is ignored
+GIT_IGNORE

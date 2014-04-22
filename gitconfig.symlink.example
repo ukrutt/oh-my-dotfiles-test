@@ -14,6 +14,7 @@
 	co = checkout
 	root = !pwd
 [core]
+	excludesfile = ~/.gitignore-global
 	autocrlf = input
 [color]
         diff = auto
