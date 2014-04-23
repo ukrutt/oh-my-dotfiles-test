@@ -11,6 +11,23 @@ git_custom_status() {
   fi
 }
 
+# Check this out: If there is a file named '~/.zsh-main-user' in your
+# home directory (it doesn't need to contain anything) then your user
+# name WON'T be printed.
+if [[ ! -r ~/.zsh-main-user ]] ; then
+    if [[ -r ~/.zsh-main-host ]] ; then
+        # No 'host' field so we need to add the colon here
+        _ZSH_USER="$fg[yellow]%n$fg[default]:$fg[cyan]"
+    else
+        _ZSH_USER="$fg[yellow]%n"
+    fi
+fi
+# Similar for the file '~/.zsh-main-host'.
+if [[ ! -r ~/.zsh-main-host ]] ; then
+    _ZSH_HOST="$fg[default]@$fg[yellow]%m$fg[default]:$fg[cyan]"
+fi
+
+
 #RVM and git settings
 if [[ -s ~/.rvm/scripts/rvm ]] ; then
   RPS1='$(git_custom_status)%{$fg[red]%}[`~/.rvm/bin/rvm-prompt`]%{$reset_color%} $EPS1'
@@ -30,4 +47,4 @@ else
   fi
 fi
 
-PROMPT='%{$fg[cyan]%}[%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
+PROMPT='%{$fg[cyan]%}[${_ZSH_USER}${_ZSH_HOST}%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '

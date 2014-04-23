@@ -10,7 +10,8 @@ export ZSH=${HOME}/.oh-my-dotfiles/oh-my-zsh
 if [[ -z "${ZSH_THEME}" ]] ; then
     ## ZSH_THEME="robbyrussell"
     ## ZSH_THEME="clean"
-    ZSH_THEME="gallois"
+    ## ZSH_THEME="gallois"
+    ZSH_THEME="ukrutt"
     ## ZSH_THEME="avit"
 fi
 
