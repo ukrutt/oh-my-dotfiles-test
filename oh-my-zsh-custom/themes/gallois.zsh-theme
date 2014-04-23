@@ -14,14 +14,14 @@ git_custom_status() {
 if [[ ! -r ~/.zsh-main-user ]] ; then
     if [[ -r ~/.zsh-main-host ]] ; then
         # No 'host' field so we need to add the colon here
-        _ZSH_USER="%n:"
+        _ZSH_USER="$fg[yellow]%n$fg[default]:$fg[cyan]"
     else
-        _ZSH_USER="%n"
+        _ZSH_USER="$fg[yellow]%n"
     fi
 fi
 
 if [[ ! -r ~/.zsh-main-host ]] ; then
-    _ZSH_HOST="@%m:"
+    _ZSH_HOST="$fg[default]@$fg[yellow]%m$fg[default]:$fg[cyan]"
 fi
 
 
