@@ -11,22 +11,19 @@ git_custom_status() {
   fi
 }
 
-_zsh_user() {
-    if [[ ! -r ~/.zsh-main-user ]] ; then
-        if [[ -r ~/.zsh-main-host ]] ; then
-            # No 'host' field so we need to add the colon here
-            echo "%n:"
-        else
-            echo "%n"
-        fi
+if [[ ! -r ~/.zsh-main-user ]] ; then
+    if [[ -r ~/.zsh-main-host ]] ; then
+        # No 'host' field so we need to add the colon here
+        _ZSH_USER="%n:"
+    else
+        _ZSH_USER="%n"
     fi
-}
+fi
 
-_zsh_host() {
-    if [[ ! -r ~/.zsh-main-host ]] ; then
-        echo "@%m:"
-    fi
-}
+if [[ ! -r ~/.zsh-main-host ]] ; then
+    _ZSH_HOST="@%m:"
+fi
+
 
 #RVM and git settings
 if [[ -s ~/.rvm/scripts/rvm ]] ; then
@@ -47,4 +44,4 @@ else
   fi
 fi
 
-PROMPT='%{$fg[cyan]%}[$(_zsh_user)$(_zsh_host)%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
+PROMPT='%{$fg[cyan]%}[${_ZSH_USER}${_ZSH_HOST}%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
