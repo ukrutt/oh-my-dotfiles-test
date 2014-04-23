@@ -30,4 +30,4 @@ else
   fi
 fi
 
-PROMPT='%{$fg[cyan]%}[%2~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
+PROMPT='%{$fg[cyan]%}[%n@%m:%2~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
