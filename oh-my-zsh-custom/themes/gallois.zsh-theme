@@ -11,6 +11,23 @@ git_custom_status() {
   fi
 }
 
+_zsh_user() {
+    if [[ ! -r ~/.zsh-main-user ]] ; then
+        if [[ -r ~/.zsh-main-host ]] ; then
+            # No 'host' field so we need to add the colon here
+            echo "%n:"
+        else
+            echo "%n"
+        fi
+    fi
+}
+
+_zsh_host() {
+    if [[ ! -r ~/.zsh-main-host ]] ; then
+        echo "@%m:"
+    fi
+}
+
 #RVM and git settings
 if [[ -s ~/.rvm/scripts/rvm ]] ; then
   RPS1='$(git_custom_status)%{$fg[red]%}[`~/.rvm/bin/rvm-prompt`]%{$reset_color%} $EPS1'
@@ -30,4 +47,4 @@ else
   fi
 fi
 
-PROMPT='%{$fg[cyan]%}[%n@%m:%2~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
+PROMPT='%{$fg[cyan]%}[$(_zsh_user)$(_zsh_host)%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
