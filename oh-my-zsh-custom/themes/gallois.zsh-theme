@@ -11,6 +11,9 @@ git_custom_status() {
   fi
 }
 
+# Check this out: If there is a file named '~/.zsh-main-user' in your
+# home directory (it doesn't need to contain anything) then your user
+# name WON'T be printed.
 if [[ ! -r ~/.zsh-main-user ]] ; then
     if [[ -r ~/.zsh-main-host ]] ; then
         # No 'host' field so we need to add the colon here
@@ -19,7 +22,7 @@ if [[ ! -r ~/.zsh-main-user ]] ; then
         _ZSH_USER="$fg[yellow]%n"
     fi
 fi
-
+# Similar for the file '~/.zsh-main-host'.
 if [[ ! -r ~/.zsh-main-host ]] ; then
     _ZSH_HOST="$fg[default]@$fg[yellow]%m$fg[default]:$fg[cyan]"
 fi
