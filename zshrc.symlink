@@ -90,7 +90,7 @@ export EDITOR=vim
 # The "plugin" doesn't work so well (it causes issues with folders of
 # the same name as a virtualenv.)
 export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/work/project
+export PROJECT_HOME=$HOME/work/projects
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Private data is (possibly) in the file below
