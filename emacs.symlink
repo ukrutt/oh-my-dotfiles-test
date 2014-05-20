@@ -329,6 +329,7 @@
 ;; Whitespace
 (setq default-indicate-empty-lines t)
 (setq-default show-trailing-whitespace t)
+(set-face-background 'trailing-whitespace "#ffffe0")
 (defun show-trailing-whitespace-on ()
   "Show trailing whitespace.
 See also `toggle-show-trailing-whitespace'
