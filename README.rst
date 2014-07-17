@@ -83,3 +83,11 @@ following files to your $HOME folder::
     $ cp ~/.oh-my-dotfiles/templates/.zsh-main-user ~/
 
 This will cause the user and computer name NOT to be printed in the prompt.
+
+
+Cygwin
+------
+
+ - Install Cygwin
+ - Install git, zsh, curl, vim
+ - Maybe   chsh, screen
