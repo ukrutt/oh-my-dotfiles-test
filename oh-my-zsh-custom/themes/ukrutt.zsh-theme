@@ -47,4 +47,4 @@ else
   fi
 fi
 
-PROMPT='%{$fg[cyan]%}[${_ZSH_USER}${_ZSH_HOST}%~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
+PROMPT='%{$fg[cyan]%}[${_ZSH_USER}${_ZSH_HOST}%2~% ]%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b '
