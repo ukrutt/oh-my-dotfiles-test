@@ -25,4 +25,4 @@ mq =
 # hgk=/Library/Python/2.6/site-packages/hgext/hgk.py
 # mercurial_keyring =
 hgext.bookmarks =
-hggit =
+# hggit =
