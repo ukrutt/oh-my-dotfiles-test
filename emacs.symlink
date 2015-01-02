@@ -191,6 +191,18 @@
       (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Scala
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+(unless (package-installed-p 'scala-mode2)
+  (package-refresh-contents) (package-install 'scala-mode2))
+
+
+
 (defun pdf-print-buffer-with-faces ()
   "convert current buffer to a PDF file with faces."
   (interactive)
