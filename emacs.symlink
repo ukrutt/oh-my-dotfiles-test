@@ -332,11 +332,11 @@
 ;; Faces
 (set-face-attribute 'mode-line nil
                     :inherit 'variable-pitch)
-(blink-cursor-mode t)
-(setq-default blink-cursor-delay 0) ;; funker ikke
-(setq-default cursor-type '(bar . 2))
+;; (blink-cursor-mode t)
+;; (setq-default blink-cursor-delay 0) ;; funker ikke
+;; (setq-default cursor-type '(bar . 2))
 ;; (setq-default cursor-type t)
-(global-set-key [(control h) ?a] 'apropos)
+;; (global-set-key [(control h) ?a] 'apropos)
 
 ;; Whitespace
 (setq default-indicate-empty-lines t)
@@ -399,6 +399,7 @@ With ARG, show trailing whitespace iff ARG is positive."
     (desktop-save-mode 1)
   (desktop-load-default)
   (desktop-read))
+(require 'bookmark+)
 
 ;; Save position in file -- just like VIM!
 (setq-default save-place t)
@@ -658,3 +659,15 @@ With ARG, show trailing whitespace iff ARG is positive."
 (put 'overwrite-mode 'disabled t)
 
 (message "*** End of .emacs ***")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
